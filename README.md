@@ -12,11 +12,15 @@ Bước 1: Đăng nhập Cloudflare trên Ubuntu.
 
 Nó sẽ đưa 1 link
 
+<img width="890" height="521" alt="{0119D89D-0CE1-42F5-AF13-CA887639A196}" src="https://github.com/user-attachments/assets/9b73c798-91af-421c-9ebe-f293f425988e" /></p>
+
 Copy link → mở trên trình duyệt
 
-Đăng nhập tài khoản Cloudflare
+<img width="1920" height="1023" alt="{AD1827A3-F637-4CE8-934A-4696B14CE465}" src="https://github.com/user-attachments/assets/4c51fe28-8157-4297-901f-084d3ba0f3d9" /></p>
 
-Chọn domain
+Đăng nhập tài khoản Cloudflare -> Chọn domain muốn sử dụng -> Authorize
+
+<img width="1167" height="633" alt="{F8AB89D0-2408-4129-8754-AA13645FF881}" src="https://github.com/user-attachments/assets/54ec4cd7-89b2-4055-bb82-ab889c33760b" /></p>
 
 ✅ Thành công → nó sẽ tạo file credentials
 
