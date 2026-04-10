@@ -24,6 +24,8 @@ Copy link → mở trên trình duyệt
 
 ✅ Thành công → nó sẽ tạo file credentials
 
+<img width="1920" height="1029" alt="{8314B799-8454-4C7A-B84B-B2E38BB96136}" src="https://github.com/user-attachments/assets/8da7324a-2d77-4bd0-b6f7-984211d4b6c3" /></p>
+
 Bước 2: Đặt tên tunnel, chọn Cloudflared
 
 - Nó sẽ tạo ra một domain quản lý là ***ducduong.cloudflareaccess.com***
