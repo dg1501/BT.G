@@ -104,5 +104,6 @@ Bước 8: Chạy Tunnel
 
 <img width="1920" height="1080" alt="{91322C59-9CF0-4F29-9307-9FA34FF9E4FB}" src="https://github.com/user-attachments/assets/72438a3f-8ffb-4847-b78b-4150291d00bd" /></p>
 
+### 2. CONVERT LỆNH DOCKER RUN -> DOCKER COMPOSE
 
-
+Bước 1: Mở file docker-compose.yml
