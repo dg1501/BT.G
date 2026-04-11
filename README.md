@@ -167,5 +167,167 @@ Bước 5: Test lại
 
 ![test](https://github.com/user-attachments/assets/35e9c529-0e4a-45c6-ae89-932da1e71024)</p>
 
+---
 
+## 📘 G. Câu hỏi về bài làm
+---
 
+### ❓ 1. Tại sao phải dùng Nginx làm Reverse Proxy mà không trỏ thẳng Tunnel vào Node-RED?
+
+- Sử dụng Nginx làm reverse proxy giúp:
+
+- Tách biệt frontend (web) và backend (API)
+  
+- Định tuyến linh hoạt:
+  
+/ → web tĩnh (HTML)
+
+/api → Node-RED hoặc Flask
+
+- Tăng bảo mật (không expose trực tiếp Node-RED)
+  
+- Dễ mở rộng hệ thống (có thể thêm nhiều service phía sau Nginx)
+
+👉 Nếu trỏ trực tiếp Tunnel vào Node-RED:
+
+- Không phục vụ được web tĩnh
+  
+- Khó mở rộng
+  
+- Thiếu lớp trung gian để kiểm soát request
+- 
+---
+
+### ❓ 2. Sự khác biệt giữa Mount file và Mount thư mục trong Docker
+
+| Tiêu chí     | Mount file              | Mount thư mục           |
+|--------------|------------------------|------------------------|
+| Phạm vi      | 1 file cụ thể          | Toàn bộ thư mục        |
+| Mục đích     | File cấu hình (nginx)  | Dữ liệu / source code  |
+| Ví dụ        | /nginx.conf            | /myweb/                |
+
+---
+
+### ❓ 3. Nếu thay đổi index.html trên Ubuntu, web có thay đổi ngay không?
+
+👉 Có, thay đổi ngay
+
+- Vì sử dụng bind mount:
+
+./myweb:/myweb
+
+→ Container đọc trực tiếp file từ máy host
+
+→ Không cần build lại image hay restart container
+
+--- 
+
+### ❓ 4. restart: always và restart: unless-stopped để làm gì?
+
+- restart: always
+  
+→ Container luôn tự chạy lại khi bị lỗi hoặc reboot máy
+
+- restart: unless-stopped
+  
+→ Giống always, nhưng nếu bạn chủ động stop thì nó sẽ không tự chạy lại
+
+👉 Giúp hệ thống ổn định, tự phục hồi khi lỗi
+
+---
+
+### 5. Khai báo các service dùng chung network
+
+📌 Cấu hình:
+
+`
+networks:
+  mynetwork:
+
+services:
+  mynginx:
+    networks:
+      - mynetwork
+
+  mynodered:
+    networks:
+      - mynetwork
+
+  myapi:
+    networks:
+      - mynetwork
+
+  cloudflared:
+    networks:
+      - mynetwork
+`
+
+🎯 Lợi ích:
+
+- Các container gọi nhau bằng tên service (DNS nội bộ)
+  
+- Không cần IP
+
+- Dễ quản lý và mở rộng hệ thống
+
+---
+
+### 6. Đưa Cloudflare Token vào .env và thêm .gitignore – tại sao quan trọng?
+
+📌 Ví dụ .env:
+
+`CLOUDFLARE_TOKEN=your_token_here`
+
+📌 .gitignore:
+
+`.env`
+
+🎯 Lý do:
+
+- Token là thông tin nhạy cảm
+
+- Nếu bị lộ:
+
+→ Có thể bị chiếm quyền domain
+
+→ Bị phá tunnel hoặc redirect traffic
+
+👉 Nguyên tắc: Không commit secrets lên GitHub
+
+---
+
+### ❓ 7. Tại sao nên thêm :ro khi mount file Nginx?
+
+`./nginx/nginx.conf:/etc/nginx/nginx.conf:ro`
+
+🎯 Ý nghĩa:
+
+- ro = read-only (chỉ đọc)
+
+🔥 Lợi ích:
+
+- Tránh container sửa file config
+  
+- Tăng bảo mật
+  
+- Giảm rủi ro lỗi cấu hình
+
+---
+
+### ❓ 8. Khi dùng Cloudflare Tunnel có cần mở port không?
+
+👉 Không cần
+
+🧠 Vì:
+
+- Tunnel tạo kết nối từ server → Cloudflare (outbound)
+
+- Không cần mở port inbound
+
+🎯 Lợi ích:
+
+- Không cần cấu hình router / NAT
+
+- An toàn hơn (không lộ port)
+
+- Dễ triển khai
