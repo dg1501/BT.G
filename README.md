@@ -54,7 +54,68 @@ cloudflare/cloudflared tunnel create mytunnel`
 
 <img width="1137" height="687" alt="{D99CA8C1-F22B-4D35-A4FC-4A54899817EA}" src="https://github.com/user-attachments/assets/2ad520ef-c671-4e1d-9605-04a30dc09b3a" /></p>
 
-Bước 5: Tạo File Config
+Bước 5: Cài cloudflared
+
+`sudo apt update`
+
+`sudo apt install cloudflared -y`
+
+` cloudflared --version`
+
+<img width="1370" height="301" alt="image" src="https://github.com/user-attachments/assets/93aab7e9-c332-478d-ab03-6880e59c39be" /></p>
+
+Bước 6: Gắn Domain với Tunnel
+
+- Chạy lệnh: `cloudflared tunnel route dns mytunnel app.ducduong.id.vn`
+  
+<img width="1368" height="321" alt="{D1F90F68-503F-480D-9DBA-73A1D156A76D}" src="https://github.com/user-attachments/assets/cd53c44d-0902-4fdc-912d-7523d676c045" /></p>
+
+✔ Domain đã trỏ về tunnel
+
+✔ DNS trên Cloudflare đã OK
+
+✔ Tunnel đã “gắn” với subdomain
+
+Bước 7: Chạy Tunnel
+
+- Chạy lệnh: `cloudflared tunnel run mytunnel`
+
+<img width="1381" height="884" alt="{9AB31EE1-E2AA-4C60-AB49-B1E695831473}" src="https://github.com/user-attachments/assets/f2c3cc06-930a-4b7a-a469-eb2855fceab8" /></P>
+
+- Mở trình duyệt: Truy cập `http://app.ducduong.id.vn`
+
+<img width="1920" height="1080" alt="{91322C59-9CF0-4F29-9307-9FA34FF9E4FB}" src="https://github.com/user-attachments/assets/72438a3f-8ffb-4847-b78b-4150291d00bd" /></p>
+
+### 2. CONVERT LỆNH DOCKER RUN -> DOCKER COMPOSE
+
+Bước 1: Mở file docker-compose.yml
+
+<img width="1167" height="854" alt="{1BA67DE6-C99E-47C1-89A0-1642444E548F}" src="https://github.com/user-attachments/assets/919e8112-7e5e-4a7b-bf11-f02d32df2625" /></p>
+
+Bước 2: Thêm service
+`
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: always
+    command: tunnel run mytunnel
+    volumes:
+      - /home/duong/.cloudflared:/home/nonroot/.cloudflared
+    depends_on:
+      - nginx
+`
+
+<img width="843" height="641" alt="{A94AB1FB-F0DC-4A9D-81EA-FB5FDD2859B2}" src="https://github.com/user-attachments/assets/d95891b9-c356-435f-b385-20acf7c355b2" /></p>
+
+Bước 3: Sửa config tunnel để trỏ vào Docker
+
+- Mở file: `nano ~/.cloudflared/config.yml`
+
+- Sửa thành như sau:
+
+<img width="852" height="364" alt="{3A9C0FB7-4534-4062-A42B-3858CE294E4C}" src="https://github.com/user-attachments/assets/9c0a3b57-badc-4763-a1bd-1867b093a5a6" /></p>
+
+### 3: THÊM ROUTER
 
 - Chạy lệnh: `nano ~/.cloudflared/config.yml`
 
@@ -72,38 +133,39 @@ ingress:
 
 <img width="1386" height="902" alt="{0AF8D775-284D-41E4-BC88-143CE11B6F55}" src="https://github.com/user-attachments/assets/9d10618a-228a-4ff0-854c-bbaf252936c5" /></p>
 
-Bước 6: Cài cloudflared
+🧠 GIẢI THÍCH
 
-`sudo apt update`
+- hostname: subdomain
 
-`sudo apt install cloudflared -y`
+- service: container đích
 
-` cloudflared --version`
+- ingress: router
 
-<img width="1370" height="301" alt="image" src="https://github.com/user-attachments/assets/93aab7e9-c332-478d-ab03-6880e59c39be" /></p>
+### 4: CHẠY LẠI DOCKER COMPOSE
 
-Bước 7: Gắn Domain với Tunnel
+`cd ~/myapp`
 
-- Chạy lệnh: `cloudflared tunnel route dns mytunnel app.ducduong.id.vn`
-  
-<img width="1368" height="321" alt="{D1F90F68-503F-480D-9DBA-73A1D156A76D}" src="https://github.com/user-attachments/assets/cd53c44d-0902-4fdc-912d-7523d676c045" /></p>
+`docker compose down`
 
-✔ Domain đã trỏ về tunnel
+`docker compose up -d`
 
-✔ DNS trên Cloudflare đã OK
+` docker compose ps`
 
-✔ Tunnel đã “gắn” với subdomain
+<img width="1103" height="529" alt="image" src="https://github.com/user-attachments/assets/de90a14e-c17f-42cb-86ba-55c858341f73" /></p>
 
-Bước 8: Chạy Tunnel
+Bước 5: Test lại 
 
-- Chạy lệnh: `cloudflared tunnel run mytunnel`
+1. WEB
 
-<img width="1381" height="884" alt="{9AB31EE1-E2AA-4C60-AB49-B1E695831473}" src="https://github.com/user-attachments/assets/f2c3cc06-930a-4b7a-a469-eb2855fceab8" /></P>
+<img width="1920" height="1035" alt="{47EE78F6-E314-498A-A5CB-C22E7EF5EACE}" src="https://github.com/user-attachments/assets/6c61f773-780c-4bdf-88fd-9fe246761e05" /></p>
 
-- Mở trình duyệt: Truy cập `http://app.ducduong.id.vn`
+2. Nodered
 
-<img width="1920" height="1080" alt="{91322C59-9CF0-4F29-9307-9FA34FF9E4FB}" src="https://github.com/user-attachments/assets/72438a3f-8ffb-4847-b78b-4150291d00bd" /></p>
+<img width="1920" height="1028" alt="{CF6EAA0E-E8EA-4813-ADB0-1650512E6137}" src="https://github.com/user-attachments/assets/4f785a86-1002-4ac7-baa8-aaf889d9b3f6" /></p>
 
-### 2. CONVERT LỆNH DOCKER RUN -> DOCKER COMPOSE
+- Test trên thiết bị khác không sử dụng wifi
 
-Bước 1: Mở file docker-compose.yml
+![test](https://github.com/user-attachments/assets/35e9c529-0e4a-45c6-ae89-932da1e71024)</p>
+
+
+
