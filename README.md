@@ -72,14 +72,37 @@ ingress:
 
 <img width="1386" height="902" alt="{0AF8D775-284D-41E4-BC88-143CE11B6F55}" src="https://github.com/user-attachments/assets/9d10618a-228a-4ff0-854c-bbaf252936c5" /></p>
 
-Bước 6: Gắn Domain với Tunnel
+Bước 6: Cài cloudflared
+
+`sudo apt update`
+
+`sudo apt install cloudflared -y`
+
+` cloudflared --version`
+
+<img width="1370" height="301" alt="image" src="https://github.com/user-attachments/assets/93aab7e9-c332-478d-ab03-6880e59c39be" /></p>
+
+Bước 7: Gắn Domain với Tunnel
 
 - Chạy lệnh: `cloudflared tunnel route dns mytunnel app.ducduong.id.vn`
+  
+<img width="1368" height="321" alt="{D1F90F68-503F-480D-9DBA-73A1D156A76D}" src="https://github.com/user-attachments/assets/cd53c44d-0902-4fdc-912d-7523d676c045" /></p>
 
-<img width="1404" height="754" alt="{1A1F7B11-5920-42BE-8283-DE23D3194818}" src="https://github.com/user-attachments/assets/9754d47a-e5ba-4d7b-b6e8-cc0f731da53a" /></p>
+✔ Domain đã trỏ về tunnel
 
-Bước 5: Hoàn tất Onboarding
+✔ DNS trên Cloudflare đã OK
 
+✔ Tunnel đã “gắn” với subdomain
+
+Bước 8: Chạy Tunnel
+
+- Chạy lệnh: `cloudflared tunnel run mytunnel`
+
+<img width="1381" height="884" alt="{9AB31EE1-E2AA-4C60-AB49-B1E695831473}" src="https://github.com/user-attachments/assets/f2c3cc06-930a-4b7a-a469-eb2855fceab8" /></P>
+
+- Mở trình duyệt: Truy cập `http://app.ducduong.id.vn`
+
+<img width="1920" height="1080" alt="{91322C59-9CF0-4F29-9307-9FA34FF9E4FB}" src="https://github.com/user-attachments/assets/72438a3f-8ffb-4847-b78b-4150291d00bd" /></p>
 
 
 
